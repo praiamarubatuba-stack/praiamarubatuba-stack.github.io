@@ -4,20 +4,80 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="text-scale" content="scale" />
-		<link href="/_app/immutable/entry/start.agtaY-_U.js" rel="modulepreload">
-		<link href="/_app/immutable/entry/payload.DSmR2FwN.js" rel="modulepreload">
-		<link href="/_app/immutable/chunks/CRzLMJPS.js" rel="modulepreload">
-		<link href="/_app/immutable/chunks/dQY017Kn.js" rel="modulepreload">
-		<link href="/_app/immutable/chunks/CV5Lru5T.js" rel="modulepreload">
-		<link href="/_app/immutable/chunks/xihTtKlq.js" rel="modulepreload">
-		<link href="/_app/immutable/chunks/Ceqqa6sN.js" rel="modulepreload">
-		<link href="/_app/immutable/entry/app.CDwxgBJd.js" rel="modulepreload">
-		<link href="/_app/immutable/chunks/CZ5punGu.js" rel="modulepreload">
-		<link href="/_app/immutable/chunks/CB0jpxY5.js" rel="modulepreload">
-		<link href="/_app/immutable/nodes/0.CcOWTUs8.js" rel="modulepreload">
-		<link href="/_app/immutable/chunks/DRnqjfVz.js" rel="modulepreload">
+		<script>
+			// The opening never stays on its screen for good, and never says that anything went wrong: it puts it right
+			// by itself. A part of the editor's code that does not come while it opens (a page the browser kept from an
+			// earlier version, asking for a part no longer published; the network failing for a moment), or an opening
+			// that has not ended long after it should, loads the page again, fresh, waiting a little longer each time it
+			// has to. What happened is reported (see `lib/reports.ts`): the user sees only the opening going on.
+			(function () {
+				var AGAIN = 'praiamob.abrindoDeNovo';
+				var WAITS = [0, 2000, 5000, 15000, 30000, 60000];
+				var opening = function () {
+					// Before its screen is there, the page is still being read: it is opening all the same.
+					var screen = document.getElementById('abrindo');
+					return screen ? !screen.classList.contains('pronto') : document.readyState === 'loading';
+				};
+				var asked = false;
+				var again = function () {
+					if (asked || !opening()) return;
+					asked = true;
+					var said = { vezes: 0, em: 0 };
+					var kept = true;
+					try {
+						said = JSON.parse(sessionStorage.getItem(AGAIN) || 'null') || said;
+					} catch (e) {
+						kept = false;
+					}
+					// Again and again in a row, the server or the network is given longer each time; long after the last,
+					// it is as the first. Where the count cannot be kept, never at once, which could be for ever.
+					var wait = !kept ? 10000 : Date.now() - said.em > 300000 ? 0 : WAITS[Math.min(said.vezes, WAITS.length - 1)];
+					setTimeout(function () {
+						try {
+							sessionStorage.setItem(AGAIN, JSON.stringify({ vezes: said.vezes + 1, em: Date.now() }));
+						} catch (e) {}
+						location.reload();
+					}, wait);
+				};
+				var ours = function (address) {
+					return /\/_app\//.test(String(address || ''));
+				};
+				addEventListener('vite:preloadError', again);
+				addEventListener(
+					'error',
+					function (event) {
+						var what = event.target;
+						if (what && what !== window && ours(what.src || what.href)) again();
+					},
+					true
+				);
+				addEventListener('unhandledrejection', function (event) {
+					var said = String((event.reason && event.reason.message) || event.reason);
+					if (/dynamically imported module|Importing a module script failed|error loading dynamically imported module/i.test(said)) again();
+				});
+				setTimeout(again, 45000);
+			})();
+		</script>
+		<link href="./_app/immutable/entry/start.agtaY-_U.js" rel="modulepreload">
+		<link href="./_app/immutable/entry/payload.DSmR2FwN.js" rel="modulepreload">
+		<link href="./_app/immutable/chunks/CRzLMJPS.js" rel="modulepreload">
+		<link href="./_app/immutable/chunks/dQY017Kn.js" rel="modulepreload">
+		<link href="./_app/immutable/chunks/CV5Lru5T.js" rel="modulepreload">
+		<link href="./_app/immutable/chunks/xihTtKlq.js" rel="modulepreload">
+		<link href="./_app/immutable/chunks/Ceqqa6sN.js" rel="modulepreload">
+		<link href="./_app/immutable/entry/app.DsO0EF2E.js" rel="modulepreload">
+		<link href="./_app/immutable/chunks/01gASyvt.js" rel="modulepreload">
+		<link href="./_app/immutable/chunks/ujzcnd0l.js" rel="modulepreload">
+		<link href="./_app/immutable/nodes/0.D3uwuoLm.js" rel="modulepreload">
+		<link href="./_app/immutable/chunks/DAFz3wAn.js" rel="modulepreload">
+		<link href="./_app/immutable/nodes/2.En3vCbZv.js" rel="modulepreload">
+		<link href="./_app/immutable/chunks/8RGgtBll.js" rel="modulepreload">
+		<link href="./_app/immutable/chunks/4Dku4jK6.js" rel="modulepreload">
 		
-		<link href="/_app/immutable/assets/0.DUhDqx1Q.css" rel="stylesheet">
+		<link href="./_app/immutable/assets/0.DUhDqx1Q.css" rel="stylesheet">
+		<link href="./_app/immutable/assets/openings.D1yOVbP0.css" rel="stylesheet">
+		<link href="./_app/immutable/assets/2.C1JA4VzE.css" rel="stylesheet">
+		<link href="./_app/immutable/assets/RenderDialog.BWEPbuhX.css" rel="stylesheet">
 		<style>
 			/* What the editor opens behind, drawn before anything of it has loaded (see `lib/opening.ts`). */
 			#abrindo {
@@ -89,16 +149,16 @@
 		<div style="display: contents">
 			<script>
 				{
-					__sveltekit_1lgtlf4 = {
-						base: "",
-						version: "1792815715351"
+					__sveltekit_1fpr3we = {
+						base: new URL(".", location).pathname.slice(0, -1),
+						version: "1792882304113"
 					};
 
 					const element = document.currentScript.parentElement;
 
-					import("/_app/immutable/entry/start.agtaY-_U.js").then(async (kit) => {
-						kit.init(__sveltekit_1lgtlf4);
-						const app = await import("/_app/immutable/entry/app.CDwxgBJd.js");
+					import("./_app/immutable/entry/start.agtaY-_U.js").then(async (kit) => {
+						kit.init(__sveltekit_1fpr3we);
+						const app = await import("./_app/immutable/entry/app.DsO0EF2E.js");
 						kit.start(app, element);
 					});
 				}
