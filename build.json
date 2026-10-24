@@ -1,1 +1,1 @@
-{"version":"0.0.8","built":"2026-10-24T01:31:23.789Z","commit":"57b3098","note":"Gerenciador refeito: móvel em 3D, sarrafos (duplo), fitas pela peça e borda, padrão da loja, tema escuro mais legível","stale":{}}
+{"version":"0.0.9","built":"2026-10-24T04:22:04.833Z","commit":"f9a9ed9","note":"Gerenciador de construção refeito: cada configuração mostra de perto o que muda; fundo e outras chaves escondem o que não vale; sarrafo em L com a base embaixo; desenhos técnicos com acionamento; portas de correr e basculante a gás; MDF e valores de fábrica escolhíveis","stale":{}}
